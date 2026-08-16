@@ -1,0 +1,279 @@
+:root {
+  --bg: #0f1923;
+  --bg-alt: #17222d;
+  --card: #1b2733;
+  --red: #ff4655;
+  --red-dark: #d6303e;
+  --text: #ece8e1;
+  --text-dim: #9fb0bd;
+  --border: #2a3944;
+  --discord: #5865f2;
+  --success: #22c55e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 50% -10%, #1b2b38 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Segoe UI", "Heebo", Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(15, 25, 35, 0.85);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.brand-mark {
+  background: var(--red);
+  color: #0f1923;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+.brand-name { font-weight: 600; }
+.brand-name em { color: var(--red); font-style: normal; }
+
+main.container { flex: 1; padding-top: 48px; padding-bottom: 48px; }
+
+.hero { text-align: center; padding: 24px 0 40px; }
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 6vw, 56px);
+  margin: 0 0 16px;
+  letter-spacing: 1px;
+}
+
+.lead {
+  color: var(--text-dim);
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto 28px;
+}
+
+.hint {
+  margin-top: 16px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.hint a { color: var(--red); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  margin: 6px;
+}
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-discord { background: var(--discord); color: #fff; }
+.btn-primary { background: var(--red); color: #0f1923; }
+.btn-secondary { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+.btn-lg { padding: 16px 36px; font-size: 16px; }
+
+.choice-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: right;
+  margin-bottom: 20px;
+}
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+}
+.form input {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 15px;
+}
+.form input:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.form button { align-self: stretch; }
+
+.alert {
+  background: rgba(255, 70, 85, 0.12);
+  border: 1px solid var(--red);
+  color: #ffd3d7;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.steps {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+}
+.steps h2 { margin-top: 0; }
+.steps ol { padding-inline-start: 20px; color: var(--text-dim); line-height: 1.9; }
+.steps strong { color: var(--text); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.card.center { text-align: center; }
+.card h1 { margin-top: 4px; font-size: 28px; }
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: block; }
+.avatar-sm { width: 24px; height: 24px; }
+
+.instructions {
+  text-align: right;
+  color: var(--text-dim);
+  line-height: 2;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 20px 20px 20px;
+  padding-inline-start: 36px;
+}
+.instructions strong { color: var(--text); }
+
+.check-list {
+  list-style: none;
+  padding: 0;
+  text-align: right;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  line-height: 2;
+}
+
+.success-mark, .error-mark {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 16px;
+}
+.success-mark { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid var(--success); }
+.error-mark { background: rgba(255, 70, 85, 0.15); color: var(--red); border: 1px solid var(--red); }
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.site-footer a { color: var(--red); text-decoration: none; }
+
+/* Admin */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+table { width: 100%; border-collapse: collapse; background: var(--bg-alt); }
+th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border); font-size: 14px; }
+th { color: var(--text-dim); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+.user-cell { display: flex; align-items: center; gap: 8px; }
+code { background: #0f1923; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+.empty { text-align: center; color: var(--text-dim); padding: 30px; }
+.btn-link-danger {
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 0;
+}

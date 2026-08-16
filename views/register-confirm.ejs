@@ -1,0 +1,23 @@
+<%- include("partials/head", { title: "אישור הרשמה לטורניר" }) %>
+
+<section class="card">
+  <div class="user-chip">
+    <img src="<%= avatarUrl %>" alt="" class="avatar" />
+    <span><%= user.global_name || user.username %></span>
+  </div>
+
+  <h1>מוכנים! מאשרים הרשמה</h1>
+  <p class="lead">אימתנו בהצלחה את החיבורים הבאים:</p>
+
+  <ul class="check-list">
+    <li>✅ משתמש דיסקורד: <strong><%= user.global_name || user.username %></strong></li>
+    <li>✅ חשבון Riot מאומת: <strong><%= riotId %></strong></li>
+  </ul>
+
+  <form method="POST" action="/register/confirm">
+    <button type="submit" class="btn btn-primary">אשר/י הרשמה לטורניר</button>
+  </form>
+  <a class="btn btn-secondary" href="/logout">זה לא אני / התנתקות</a>
+</section>
+
+<%- include("partials/foot") %>

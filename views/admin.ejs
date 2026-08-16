@@ -1,0 +1,47 @@
+<%- include("partials/head", { title: "ניהול הרשמות" }) %>
+
+<section class="admin">
+  <div class="admin-header">
+    <h1>נרשמים לטורניר (<%= registrations.length %>)</h1>
+    <a class="btn btn-secondary" href="/admin/export.csv">ייצוא CSV</a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>דיסקורד</th>
+          <th>Discord ID</th>
+          <th>חשבון Riot</th>
+          <th>נרשם בתאריך</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% registrations.forEach((r, i) => { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td class="user-cell">
+              <img src="<%= r.discord_avatar %>" alt="" class="avatar avatar-sm" />
+              <%= r.discord_username %>
+            </td>
+            <td><code><%= r.discord_id %></code></td>
+            <td><%= r.riot_connection_name %></td>
+            <td><%= r.registered_at %></td>
+            <td>
+              <form method="POST" action="/admin/delete/<%= r.id %>" onsubmit="return confirm('למחוק את הרשומה הזו?');">
+                <button type="submit" class="btn-link-danger">מחיקה</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (registrations.length === 0) { %>
+          <tr><td colspan="6" class="empty">אין נרשמים עדיין.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include("partials/foot") %>

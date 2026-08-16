@@ -1,0 +1,20 @@
+{
+  "name": "valorant-turnir-townzone",
+  "version": "1.0.0",
+  "description": "אתר הרשמה לטורניר ולוראנט של שרת TownZone - התחברות חובה עם דיסקורד + חיבור Riot Games",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-basic-auth": "^1.2.1",
+    "express-session": "^1.18.0"
+  }
+}

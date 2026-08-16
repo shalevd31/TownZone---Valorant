@@ -1,0 +1,22 @@
+<%- include("partials/head", { title: "האזור האישי שלי" }) %>
+
+<section class="card">
+  <div class="user-chip">
+    <img src="<%= registration.discord_avatar %>" alt="" class="avatar" />
+    <span><%= registration.discord_username %></span>
+  </div>
+
+  <h1>אתם רשומים לטורניר</h1>
+
+  <ul class="check-list">
+    <li>שם משתמש: <strong><%= registration.username %></strong></li>
+    <li>חשבון Riot מחובר: <strong><%= registration.riot_connection_name %></strong></li>
+    <li>נרשמת בתאריך: <strong><%= registration.registered_at %></strong></li>
+  </ul>
+
+  <p class="hint">עדכונים, משימות והפתעות יפורסמו בשרת הדיסקורד.</p>
+  <a class="btn btn-discord" href="<%= discordInviteUrl %>" target="_blank" rel="noopener">כניסה לשרת TownZone</a>
+  <a class="btn btn-secondary" href="/logout">התנתקות</a>
+</section>
+
+<%- include("partials/foot") %>

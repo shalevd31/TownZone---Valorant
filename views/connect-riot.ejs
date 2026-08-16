@@ -1,0 +1,19 @@
+<%- include("partials/head", { title: "התחברות עם Riot" }) %>
+
+<section class="card">
+  <div class="user-chip">
+    <img src="<%= avatarUrl %>" alt="" class="avatar" />
+    <span><%= user.global_name || user.username %></span>
+  </div>
+
+  <h1>עוד צעד אחד — התחברו עם Riot</h1>
+  <p class="lead">
+    כדי להשלים הרשמה חובה לאמת בעלות על חשבון Riot שלכם. לוחצים על הכפתור,
+    מתחברים במסך ההתחברות הרשמי של Riot (Riot Client), וחוזרים לכאן אוטומטית.
+  </p>
+
+  <a class="btn btn-primary" href="/auth/riot">התחברות עם Riot</a>
+  <a class="btn btn-secondary" href="/logout">התנתקות</a>
+</section>
+
+<%- include("partials/foot") %>

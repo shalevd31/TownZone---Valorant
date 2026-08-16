@@ -1,0 +1,15 @@
+<%- include("partials/head", { title: "כבר רשומים לטורניר" }) %>
+
+<section class="card center">
+  <div class="success-mark">✔</div>
+  <h1>אתם כבר רשומים לטורניר</h1>
+  <p class="lead">
+    נרשמת בתאריך <strong><%= registration.registered_at %></strong> עם חשבון ריוט
+    <strong><%= registration.riot_connection_name %></strong>.
+  </p>
+  <p class="hint">לכניסה לאתר בפעם הבאה השתמשו בשם המשתמש והסיסמה שנשלחו לכם בהודעה פרטית בדיסקורד.</p>
+  <a class="btn btn-primary" href="/login">כניסה עם שם משתמש וסיסמה</a>
+  <a class="btn btn-secondary" href="/logout">התנתקות</a>
+</section>
+
+<%- include("partials/foot") %>

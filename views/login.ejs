@@ -1,0 +1,28 @@
+<%- include("partials/head", { title: "כניסה לאתר הטורניר" }) %>
+
+<section class="card">
+  <h1>כניסה לאתר</h1>
+  <p class="lead">
+    התחברו עם שם המשתמש והסיסמה שקיבלתם בהודעה פרטית בדיסקורד בעת ההרשמה.
+  </p>
+
+  <% if (error) { %>
+    <p class="alert"><%= error %></p>
+  <% } %>
+
+  <form method="POST" action="/login" class="form">
+    <label>
+      שם משתמש
+      <input type="text" name="username" required autocomplete="username" />
+    </label>
+    <label>
+      סיסמה
+      <input type="password" name="password" required autocomplete="current-password" />
+    </label>
+    <button type="submit" class="btn btn-primary">כניסה</button>
+  </form>
+
+  <p class="hint">עדיין לא נרשמתם? <a href="/auth/discord">הירשמו כאן</a></p>
+</section>
+
+<%- include("partials/foot") %>

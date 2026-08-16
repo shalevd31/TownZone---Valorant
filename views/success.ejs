@@ -1,0 +1,29 @@
+<%- include("partials/head", { title: "נרשמת בהצלחה!" }) %>
+
+<section class="card center">
+  <div class="success-mark">✔</div>
+  <h1>נרשמת בהצלחה לטורניר!</h1>
+  <p class="lead">
+    <strong><%= discordUsername %></strong>, ההרשמה שלך עם חשבון הריוט
+    <strong><%= riotName %></strong> נקלטה בהצלחה.
+  </p>
+
+  <% if (dmSent) { %>
+    <p>שלחנו לך הודעה פרטית בדיסקורד עם שם המשתמש והסיסמה שלך לכניסה לאתר בפעמים הבאות.</p>
+  <% } else { %>
+    <p class="alert">
+      לא הצלחנו לשלוח לך הודעה פרטית בדיסקורד (ייתכן שהודעות פרטיות מחברי השרת חסומות אצלך).
+      לכן, לפעם הזו בלבד, הנה פרטי הכניסה שלך לאתר — שמרו אותם במקום בטוח ולא תראו אותם שוב:
+    </p>
+    <ul class="check-list">
+      <li>שם משתמש: <strong><%= username %></strong></li>
+      <li>סיסמה: <strong><%= password %></strong></li>
+    </ul>
+    <p class="hint">מומלץ לאפשר הודעות פרטיות מחברי השרת בהגדרות הפרטיות של דיסקורד לקבלת עדכונים עתידיים.</p>
+  <% } %>
+
+  <p>עדכונים לגבי הטורניר יישלחו בשרת הדיסקורד — הישארו קשובים.</p>
+  <a class="btn btn-discord" href="<%= discordInviteUrl %>" target="_blank" rel="noopener">חזרה לשרת הדיסקורד</a>
+</section>
+
+<%- include("partials/foot") %>
