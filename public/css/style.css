@@ -462,15 +462,13 @@ main.container > section {
 }
 .guest-avatar {
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  color: #0f1923;
-  background: linear-gradient(135deg, var(--red), #ffb3ba);
+  object-fit: cover;
+  object-position: top center;
+  background: var(--bg-alt);
+  border: 2px solid var(--red);
   box-shadow: 0 0 18px rgba(255, 70, 85, 0.6);
 }
 .guest-tag {
