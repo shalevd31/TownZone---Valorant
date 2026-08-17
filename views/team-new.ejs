@@ -1,0 +1,49 @@
+<%- include("partials/head", { title: "יצירת קבוצה לטורניר" }) %>
+
+<section class="card wide">
+  <h1>יצירת קבוצה לטורניר</h1>
+  <p class="lead">
+    אתם הקפטן/ית של הקבוצה — אתם מייצגים אותה ואחראים לחלוקת הפרס בין
+    חברי הקבוצה בסיום הטורניר. מלאו את פרטי 4 השחקנים הנוספים בקבוצה,
+    ואופציונלית עד 2 מחליפים.
+  </p>
+
+  <% if (error) { %>
+    <p class="alert"><%= error %></p>
+  <% } %>
+
+  <form method="POST" action="/team/new" class="form">
+    <label>
+      שם הקבוצה
+      <input type="text" name="teamName" value="<%= formData.teamName || '' %>" required />
+    </label>
+
+    <div class="team-captain-note">
+      <strong>קפטן:</strong> <%= registration.discord_username %> (<%= registration.riot_connection_name %>)
+    </div>
+
+    <h2 class="section-title">שחקנים קבועים (4)</h2>
+    <% for (let i = 1; i <= 4; i++) { %>
+      <div class="member-row">
+        <span class="member-index">#<%= i + 1 %></span>
+        <input type="text" name="member<%= i %>_name" placeholder="שם השחקן" value="<%= formData['member' + i + '_name'] || '' %>" required />
+        <input type="text" name="member<%= i %>_riot" placeholder="Riot ID (שם#תגית)" value="<%= formData['member' + i + '_riot'] || '' %>" required />
+        <input type="text" name="member<%= i %>_role" placeholder="סוכן/תפקיד (אופציונלי)" value="<%= formData['member' + i + '_role'] || '' %>" />
+      </div>
+    <% } %>
+
+    <h2 class="section-title">מחליפים (עד 2, אופציונלי)</h2>
+    <% for (let i = 1; i <= 2; i++) { %>
+      <div class="member-row">
+        <span class="member-index">מחליף <%= i %></span>
+        <input type="text" name="sub<%= i %>_name" placeholder="שם השחקן" value="<%= formData['sub' + i + '_name'] || '' %>" />
+        <input type="text" name="sub<%= i %>_riot" placeholder="Riot ID (שם#תגית)" value="<%= formData['sub' + i + '_riot'] || '' %>" />
+        <input type="text" name="sub<%= i %>_role" placeholder="סוכן/תפקיד (אופציונלי)" value="<%= formData['sub' + i + '_role'] || '' %>" />
+      </div>
+    <% } %>
+
+    <button type="submit" class="btn btn-primary btn-lg">צור קבוצה</button>
+  </form>
+</section>
+
+<%- include("partials/foot") %>

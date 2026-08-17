@@ -1,0 +1,48 @@
+<%- include("partials/head", { title: "ניהול קבוצות" }) %>
+
+<section class="admin">
+  <div class="admin-header">
+    <h1>קבוצות רשומות (<%= teams.length %>)</h1>
+    <a class="btn btn-secondary" href="/admin">חזרה לנרשמים</a>
+  </div>
+
+  <% teams.forEach((team) => { %>
+    <div class="team-block">
+      <h2><%= team.name %></h2>
+      <p class="hint">
+        קפטן: <%= team.captain_discord_username %> (<%= team.captain_riot_id %>) &middot;
+        נוצרה בתאריך <%= team.created_at %>
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>שם</th>
+              <th>Riot ID</th>
+              <th>סוכן/תפקיד</th>
+              <th>סטטוס</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% team.members.forEach((m, i) => { %>
+              <tr>
+                <td><%= i + 1 %></td>
+                <td><%= m.display_name %></td>
+                <td><%= m.riot_id %></td>
+                <td><%= m.role_or_agent || "-" %></td>
+                <td><%= m.is_substitute ? "מחליף" : "קבוע" %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% }) %>
+
+  <% if (teams.length === 0) { %>
+    <p class="empty">אין קבוצות רשומות עדיין.</p>
+  <% } %>
+</section>
+
+<%- include("partials/foot") %>

@@ -1,0 +1,39 @@
+<%- include("partials/head", { title: team.name }) %>
+
+<section class="card wide">
+  <h1><%= team.name %></h1>
+  <p class="lead">קפטן הקבוצה: <strong><%= registration.discord_username %></strong> (<%= registration.riot_connection_name %>)</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>שם</th>
+          <th>Riot ID</th>
+          <th>סוכן/תפקיד</th>
+          <th>סטטוס</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% members.forEach((m, i) => { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= m.display_name %></td>
+            <td><%= m.riot_id %></td>
+            <td><%= m.role_or_agent || "-" %></td>
+            <td><%= m.is_substitute ? "מחליף" : "קבוע" %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="hint">
+    לו"ז המשחקים ומספר הסבבים ייקבעו לפי כמות הקבוצות שנרשמו, ויפורסמו
+    בשרת הדיסקורד. הטורניר יוצא לדרך בשעה 17:00.
+  </p>
+  <a class="btn btn-discord" href="/" >חזרה לדף הבית</a>
+</section>
+
+<%- include("partials/foot") %>

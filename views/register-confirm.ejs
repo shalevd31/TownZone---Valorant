@@ -18,10 +18,12 @@
     <% } %>
   </ul>
 
-  <form method="POST" action="/register/confirm">
-    <button type="submit" class="btn btn-primary">אשר/י הרשמה לטורניר</button>
-  </form>
-  <a class="btn btn-secondary" href="/logout">זה לא אני / התנתקות</a>
+  <div class="choice-row">
+    <form method="POST" action="/register/confirm">
+      <button type="submit" class="btn btn-primary">אשר/י הרשמה לטורניר</button>
+    </form>
+    <a class="btn btn-secondary" href="/logout">זה לא אני / התנתקות</a>
+  </div>
 </section>
 
 <%- include("partials/foot") %>

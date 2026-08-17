@@ -277,3 +277,183 @@ code { background: #0f1923; padding: 2px 6px; border-radius: 4px; font-size: 12p
   text-decoration: underline;
   padding: 0;
 }
+
+/* --- כניסה מונפשת לתוכן --- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card,
+.hero,
+.steps,
+.agent-carousel,
+.guest-card,
+.prize-banner,
+.admin,
+main.container > section {
+  animation: fadeUp 0.5s ease both;
+}
+.agent-carousel { animation-delay: 0.05s; }
+.guest-card { animation-delay: 0.15s; }
+.prize-banner { animation-delay: 0.25s; }
+.steps { animation-delay: 0.35s; }
+
+/* --- קבוצות: טפסים רחבים --- */
+.card.wide { max-width: 760px; }
+
+.section-title {
+  font-size: 15px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 8px 0 -4px;
+}
+
+.member-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.member-row .member-index {
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .member-row { grid-template-columns: 1fr; }
+}
+
+.team-captain-note {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.team-captain-note strong { color: var(--text); }
+
+.team-block {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.team-block h2 { margin: 0 0 4px; }
+
+/* --- קרוסלת סוכנים מונפשת (עיצוב סטייליסטי, בלי תמונות של Riot) --- */
+.agent-carousel {
+  position: relative;
+  height: 150px;
+  max-width: 620px;
+  margin: 32px auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 120%, rgba(255, 70, 85, 0.08), transparent 70%), var(--bg-alt);
+  overflow: hidden;
+}
+
+@keyframes agentCycle {
+  0%, 1% { opacity: 0; transform: scale(0.96); }
+  4%, 12% { opacity: 1; transform: scale(1); }
+  15%, 100% { opacity: 0; transform: scale(0.96); }
+}
+
+.carousel-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  animation: agentCycle 12s infinite;
+  animation-fill-mode: backwards;
+}
+.carousel-item:nth-child(1) { animation-delay: 0s; }
+.carousel-item:nth-child(2) { animation-delay: 2s; }
+.carousel-item:nth-child(3) { animation-delay: 4s; }
+.carousel-item:nth-child(4) { animation-delay: 6s; }
+.carousel-item:nth-child(5) { animation-delay: 8s; }
+.carousel-item:nth-child(6) { animation-delay: 10s; }
+
+.agent-badge {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 24px;
+  color: #0f1923;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: linear-gradient(135deg, var(--agent-color), #fff2);
+  box-shadow: 0 0 24px var(--agent-color);
+}
+.agent-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+.agent-role {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--agent-color);
+  font-weight: 700;
+}
+
+/* --- כרטיס אורח --- */
+.guest-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: 620px;
+  margin: 0 auto 24px;
+  padding: 18px 24px;
+  background: linear-gradient(90deg, rgba(255, 70, 85, 0.1), transparent);
+  border: 1px solid var(--red);
+  border-radius: 14px;
+}
+.guest-avatar {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #0f1923;
+  background: linear-gradient(135deg, var(--red), #ffb3ba);
+  box-shadow: 0 0 18px rgba(255, 70, 85, 0.6);
+}
+.guest-tag {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.guest-text p { margin: 0; color: var(--text-dim); }
+.guest-text strong { color: var(--text); }
+
+/* --- באנר פרס --- */
+.prize-banner {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 24px;
+  padding: 28px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 70, 85, 0.18), rgba(88, 101, 242, 0.12));
+  border: 1px solid var(--red);
+}
+.prize-banner h2 {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 4vw, 28px);
+}
+
+.format-list { list-style: none; padding: 0; color: var(--text-dim); line-height: 2.1; }
+.format-list strong { color: var(--text); }
+
+.cta-footer { max-width: 620px; margin: 0 auto; }

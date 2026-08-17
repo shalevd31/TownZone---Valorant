@@ -15,8 +15,16 @@
   </ul>
 
   <p class="hint">עדכונים, משימות והפתעות יפורסמו בשרת הדיסקורד.</p>
-  <a class="btn btn-discord" href="<%= discordInviteUrl %>" target="_blank" rel="noopener">כניסה לשרת TownZone</a>
-  <a class="btn btn-secondary" href="/logout">התנתקות</a>
+
+  <div class="choice-row">
+    <% if (team) { %>
+      <a class="btn btn-primary" href="/team">הקבוצה שלי — <%= team.name %></a>
+    <% } else { %>
+      <a class="btn btn-primary" href="/team/new">יצירת קבוצה לטורניר</a>
+    <% } %>
+    <a class="btn btn-discord" href="<%= discordInviteUrl %>" target="_blank" rel="noopener">כניסה לשרת TownZone</a>
+    <a class="btn btn-secondary" href="/logout">התנתקות</a>
+  </div>
 </section>
 
 <%- include("partials/foot") %>

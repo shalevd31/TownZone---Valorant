@@ -66,6 +66,18 @@ async function isGuildMember(accessToken) {
   return guilds.some((g) => g.id === GUILD_ID);
 }
 
+// מזהה את הרישום של המשתמש הנוכחי, בין אם הוא מגיע מסשן דיסקורד טרי
+// ובין אם מכניסה עם שם משתמש/סיסמה
+function getCurrentRegistration(req) {
+  if (req.session.loggedInUsername) {
+    return db.findByUsername(req.session.loggedInUsername);
+  }
+  if (req.session.discordUser) {
+    return db.findByDiscordId(req.session.discordUser.id);
+  }
+  return null;
+}
+
 app.get("/", (req, res) => {
   res.render("index", {
     discordInviteUrl: DISCORD_INVITE_URL,
@@ -281,7 +293,76 @@ app.get("/account", (req, res) => {
     req.session.destroy(() => {});
     return res.redirect("/login");
   }
-  res.render("account", { registration, discordInviteUrl: DISCORD_INVITE_URL });
+  const team = db.findTeamByCaptainId(registration.id);
+  res.render("account", { registration, discordInviteUrl: DISCORD_INVITE_URL, team });
+});
+
+app.get("/team/new", (req, res) => {
+  const registration = getCurrentRegistration(req);
+  if (!registration) return res.redirect("/login");
+
+  const existingTeam = db.findTeamByCaptainId(registration.id);
+  if (existingTeam) return res.redirect("/team");
+
+  res.render("team-new", { registration, error: null, formData: {} });
+});
+
+app.post("/team/new", (req, res) => {
+  const registration = getCurrentRegistration(req);
+  if (!registration) return res.redirect("/login");
+
+  const existingTeam = db.findTeamByCaptainId(registration.id);
+  if (existingTeam) return res.redirect("/team");
+
+  const body = req.body;
+  const teamName = (body.teamName || "").trim();
+
+  const readMember = (prefix) => {
+    const displayName = (body[`${prefix}_name`] || "").trim();
+    const riotId = (body[`${prefix}_riot`] || "").trim();
+    const roleOrAgent = (body[`${prefix}_role`] || "").trim();
+    return { displayName, riotId, roleOrAgent };
+  };
+
+  const requiredMembers = ["member1", "member2", "member3", "member4"].map(readMember);
+  const substitutes = ["sub1", "sub2"]
+    .map(readMember)
+    .filter((m) => m.displayName || m.riotId);
+
+  const missingRequired = requiredMembers.some((m) => !m.displayName || !m.riotId);
+  const incompleteSubstitute = substitutes.some((m) => !m.displayName || !m.riotId);
+
+  if (!teamName || missingRequired || incompleteSubstitute) {
+    return res.render("team-new", {
+      registration,
+      formData: body,
+      error: "יש למלא שם קבוצה, ואת השם וה-Riot ID של 4 השחקנים הקבועים לפחות. למחליף שמתחילים למלא צריך גם שם וגם Riot ID.",
+    });
+  }
+
+  const members = [
+    ...requiredMembers.map((m) => ({ ...m, isSubstitute: false })),
+    ...substitutes.map((m) => ({ ...m, isSubstitute: true })),
+  ];
+
+  const teamId = db.createTeam({
+    name: teamName,
+    captainRegistrationId: registration.id,
+    members,
+  });
+
+  res.redirect("/team");
+});
+
+app.get("/team", (req, res) => {
+  const registration = getCurrentRegistration(req);
+  if (!registration) return res.redirect("/login");
+
+  const team = db.findTeamByCaptainId(registration.id);
+  if (!team) return res.redirect("/team/new");
+
+  const members = db.listTeamMembers(team.id);
+  res.render("team-view", { registration, team, members });
 });
 
 app.get("/logout", (req, res) => {
@@ -297,6 +378,10 @@ const adminAuth = basicAuth({
 
 app.get("/admin", adminAuth, (req, res) => {
   res.render("admin", { registrations: db.listRegistrations() });
+});
+
+app.get("/admin/teams", adminAuth, (req, res) => {
+  res.render("admin-teams", { teams: db.listTeamsWithMembers() });
 });
 
 app.post("/admin/delete/:id", adminAuth, (req, res) => {
