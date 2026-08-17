@@ -288,15 +288,69 @@ code { background: #0f1923; padding: 2px 6px; border-radius: 4px; font-size: 12p
 .steps,
 .agent-carousel,
 .guest-card,
-.prize-banner,
+.prize-hero,
 .admin,
 main.container > section {
   animation: fadeUp 0.5s ease both;
 }
 .agent-carousel { animation-delay: 0.05s; }
 .guest-card { animation-delay: 0.15s; }
-.prize-banner { animation-delay: 0.25s; }
+.prize-hero { animation-delay: 0.25s; }
 .steps { animation-delay: 0.35s; }
+
+/* --- אפקט סורק (scanlines), עדין ברקע --- */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0) 3px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+.inline-note {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  max-width: 620px;
+  margin: 0 auto 20px;
+}
+.inline-note strong { color: var(--text); }
+
+.alert.wide {
+  max-width: 620px;
+  margin: 0 auto 24px;
+  display: block;
+  text-align: right;
+}
+
+/* --- אפקט גליץ' עדין על כותרות --- */
+@keyframes glitchShift {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+}
+.glitch-hover:hover {
+  animation: glitchShift 0.25s steps(2) infinite;
+  text-shadow: 2px 0 rgba(74, 125, 255, 0.6), -2px 0 rgba(255, 70, 85, 0.6);
+}
+
+@keyframes valPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0.55); }
+  70% { box-shadow: 0 0 0 22px rgba(255, 70, 85, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0); }
+}
+.val-pulse { animation: valPulse 2.2s infinite; }
 
 /* --- קבוצות: טפסים רחבים --- */
 .card.wide { max-width: 760px; }
@@ -343,22 +397,22 @@ main.container > section {
 }
 .team-block h2 { margin: 0 0 4px; }
 
-/* --- קרוסלת סוכנים מונפשת (עיצוב סטייליסטי, בלי תמונות של Riot) --- */
+/* --- קרוסלת סוכנים מונפשת (תמונות רשמיות מ-valorant-api.com) --- */
 .agent-carousel {
   position: relative;
-  height: 150px;
+  height: 320px;
   max-width: 620px;
   margin: 32px auto;
   border: 1px solid var(--border);
   border-radius: 14px;
-  background: radial-gradient(circle at 50% 120%, rgba(255, 70, 85, 0.08), transparent 70%), var(--bg-alt);
+  background: radial-gradient(circle at 50% 120%, rgba(255, 70, 85, 0.1), transparent 70%), var(--bg-alt);
   overflow: hidden;
 }
 
 @keyframes agentCycle {
-  0%, 1% { opacity: 0; transform: scale(0.96); }
-  4%, 12% { opacity: 1; transform: scale(1); }
-  15%, 100% { opacity: 0; transform: scale(0.96); }
+  0%, 1% { opacity: 0; transform: scale(0.97) translateY(6px); }
+  4%, 12% { opacity: 1; transform: scale(1) translateY(0); }
+  15%, 100% { opacity: 0; transform: scale(0.97) translateY(6px); }
 }
 
 .carousel-item {
@@ -367,8 +421,9 @@ main.container > section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 2px;
+  padding-bottom: 16px;
   animation: agentCycle 12s infinite;
   animation-fill-mode: backwards;
 }
@@ -379,18 +434,10 @@ main.container > section {
 .carousel-item:nth-child(5) { animation-delay: 8s; }
 .carousel-item:nth-child(6) { animation-delay: 10s; }
 
-.agent-badge {
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 24px;
-  color: #0f1923;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  background: linear-gradient(135deg, var(--agent-color), #fff2);
-  box-shadow: 0 0 24px var(--agent-color);
+.agent-portrait {
+  height: 230px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 28px var(--agent-color));
 }
 .agent-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
 .agent-role {
@@ -438,21 +485,48 @@ main.container > section {
 .guest-text p { margin: 0; color: var(--text-dim); }
 .guest-text strong { color: var(--text); }
 
-/* --- באנר פרס --- */
-.prize-banner {
+/* --- באנר פרס גדול --- */
+.prize-hero {
   text-align: center;
-  max-width: 620px;
-  margin: 0 auto 24px;
-  padding: 28px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(255, 70, 85, 0.18), rgba(88, 101, 242, 0.12));
+  max-width: 720px;
+  margin: 0 auto 28px;
+  padding: 48px 32px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 20% -10%, rgba(255, 70, 85, 0.25), transparent 55%),
+    radial-gradient(circle at 85% 110%, rgba(88, 101, 242, 0.2), transparent 55%),
+    var(--card);
   border: 1px solid var(--red);
 }
-.prize-banner h2 {
-  margin: 0 0 16px;
-  font-size: clamp(20px, 4vw, 28px);
+.prize-hero h1 {
+  margin: 0 0 28px;
+  font-size: clamp(24px, 5vw, 38px);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.prize-amount {
+  color: var(--red);
+  text-shadow: 0 0 30px rgba(255, 70, 85, 0.6);
 }
 
+.btn-huge {
+  padding: 20px 52px;
+  font-size: 19px;
+  border-radius: 4px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+  position: relative;
+}
+.btn-huge::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #0f1923;
+}
+
+.rules { max-width: 720px; margin: 0 auto 28px; }
 .format-list { list-style: none; padding: 0; color: var(--text-dim); line-height: 2.1; }
 .format-list strong { color: var(--text); }
 

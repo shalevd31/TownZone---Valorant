@@ -1,56 +1,48 @@
-<%- include("partials/head", { title: "נרשמת בהצלחה!" }) %>
+<%- include("partials/head", { title: "נרשמת! | TownZone Valorant" }) %>
 
-<section class="card center">
-  <div class="success-mark">✔</div>
-  <h1>נרשמת בהצלחה לטורניר!</h1>
-  <p class="lead">
-    <strong><%= discordUsername %></strong>, ההרשמה שלך עם חשבון הריוט
-    <strong><%= riotName %></strong> נקלטה בהצלחה.
-  </p>
+<div class="scanlines" aria-hidden="true"></div>
 
-  <% if (dmSent) { %>
-    <p>שלחנו לך הודעה פרטית בדיסקורד עם שם המשתמש והסיסמה שלך לכניסה לאתר בפעמים הבאות.</p>
-  <% } else { %>
-    <p class="alert">
-      לא הצלחנו לשלוח לך הודעה פרטית בדיסקורד (ייתכן שהודעות פרטיות מחברי השרת חסומות אצלך).
-      לכן, לפעם הזו בלבד, הנה פרטי הכניסה שלך לאתר — שמרו אותם במקום בטוח ולא תראו אותם שוב:
-    </p>
+<% if (dmSent) { %>
+  <p class="inline-note">✔ <strong><%= discordUsername %></strong>, שלחנו לך הודעה פרטית בדיסקורד עם שם המשתמש והסיסמה שלך.</p>
+<% } else { %>
+  <div class="alert wide">
+    לא הצלחנו לשלוח לך הודעה פרטית בדיסקורד (ייתכן שהודעות פרטיות מחברי השרת חסומות אצלך).
+    לכן, לפעם הזו בלבד, הנה פרטי הכניסה שלך — שמרו אותם, לא תראו אותם שוב:
     <ul class="check-list">
       <li>שם משתמש: <strong><%= username %></strong></li>
       <li>סיסמה: <strong><%= password %></strong></li>
     </ul>
-    <p class="hint">מומלץ לאפשר הודעות פרטיות מחברי השרת בהגדרות הפרטיות של דיסקורד לקבלת עדכונים עתידיים.</p>
-  <% } %>
-</section>
+  </div>
+<% } %>
 
 <section class="agent-carousel" aria-hidden="true">
-  <div class="carousel-item" style="--agent-color:#5ce1e6">
-    <div class="agent-badge">J</div>
+  <div class="carousel-item" style="--agent-color:#ff4655">
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png" alt="Jett" />
     <div class="agent-name">Jett</div>
     <div class="agent-role">Duelist</div>
   </div>
-  <div class="carousel-item" style="--agent-color:#ff6b35">
-    <div class="agent-badge">P</div>
+  <div class="carousel-item" style="--agent-color:#ff9f45">
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/eb93336a-449b-9c1b-0a54-a891f7921d69/fullportrait.png" alt="Phoenix" />
     <div class="agent-name">Phoenix</div>
     <div class="agent-role">Duelist</div>
   </div>
   <div class="carousel-item" style="--agent-color:#4a7dff">
-    <div class="agent-badge">S</div>
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png" alt="Sova" />
     <div class="agent-name">Sova</div>
     <div class="agent-role">Initiator</div>
   </div>
   <div class="carousel-item" style="--agent-color:#2fd9a8">
-    <div class="agent-badge">S</div>
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/fullportrait.png" alt="Sage" />
     <div class="agent-name">Sage</div>
     <div class="agent-role">Sentinel</div>
   </div>
   <div class="carousel-item" style="--agent-color:#8b5cf6">
-    <div class="agent-badge">O</div>
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/fullportrait.png" alt="Omen" />
     <div class="agent-name">Omen</div>
     <div class="agent-role">Controller</div>
   </div>
   <div class="carousel-item" style="--agent-color:#f7d354">
-    <div class="agent-badge">K</div>
+    <img class="agent-portrait" src="https://media.valorant-api.com/agents/1e58de9c-4950-5125-93e9-a0aee9f98746/fullportrait.png" alt="Killjoy" />
     <div class="agent-name">Killjoy</div>
     <div class="agent-role">Sentinel</div>
   </div>
@@ -64,20 +56,22 @@
   </div>
 </section>
 
-<section class="prize-banner">
-  <h2>ברוכים הבאים לטורניר ולוראנט של הקיץ על 700 ש"ח!</h2>
-  <a class="btn btn-primary btn-lg" href="/team/new">יצירת קבוצה לטורניר</a>
+<section class="prize-hero">
+  <h1 class="glitch-hover">ברוכים הבאים לטורניר ולוראנט של הקיץ<br />על <span class="prize-amount">700 ש"ח!</span></h1>
+  <a class="btn btn-primary btn-huge val-pulse" href="/team/new">יצירת קבוצה לטורניר</a>
 </section>
 
-<section class="steps">
-  <h2>פורמט הטורניר</h2>
+<section class="steps rules">
+  <h2>פורמט וחוקי הטורניר</h2>
   <ul class="format-list">
-    <li>🏆 <strong>הפרס:</strong> 700 ש"ח לקבוצה המנצחת.</li>
-    <li>👑 <strong>קפטן הקבוצה:</strong> מייצג את הקבוצה מול הצוות המארגן, ואחראי על חלוקת הפרס בין חברי הקבוצה בסיום הטורניר.</li>
-    <li>👥 <strong>הרכב קבוצה:</strong> 5 שחקנים קבועים (קפטן + 4) ועד 2 מחליפים.</li>
-    <li>📝 <strong>הרשמת חברי קבוצה:</strong> הקפטן רושם את שאר חברי הקבוצה במערכת, כולל מה כל אחד משחק. אפשר להחליף שחקנים בין הסבבים.</li>
-    <li>🕐 <strong>שעת התחלה:</strong> כל משחקי הטורניר מתחילים בשעה 17:00.</li>
-    <li>🎮 <strong>מספר סבבים:</strong> ייקבע לפי כמות הקבוצות שנרשמו, ויפורסם בשרת הדיסקורד.</li>
+    <li>🏆 <strong>הפרס:</strong> 700 ש"ח לקבוצה המנצחת. הפרס מועבר לקפטן הקבוצה, שאחראי לחלק אותו בין חברי הקבוצה.</li>
+    <li>👑 <strong>הקפטן:</strong> נציג הקבוצה מול הצוות המארגן. הוא זה שמבצע את ההרשמה עבור כל חברי הקבוצה במערכת.</li>
+    <li>👥 <strong>הרכב קבוצה:</strong> 5 שחקנים קבועים (קפטן + 4) + עד 2 מחליפים. מחליפים נכנסים רק בין סבבים (מפות) — לא באמצע משחק.</li>
+    <li>📝 <strong>הרשמה:</strong> רק הקפטן נרשם באתר. הוא מזין את שמות שאר חברי הקבוצה, ה-Riot ID שלהם, ומה כל אחד משחק.</li>
+    <li>🕐 <strong>שעת התחלה:</strong> כל משחקי הטורניר יוצאים לדרך בשעה 17:00 בדיוק. יש להגיע מוכנים.</li>
+    <li>🎮 <strong>מבנה הטורניר:</strong> מספר הסבבים ייקבע לפי כמות הקבוצות שנרשמו, ויפורסם בשרת הדיסקורד.</li>
+    <li>🤝 <strong>הדרכה:</strong> הצוות המארגן ילווה ויכוון את הטורניר יחד עם קפטני הקבוצות לאורך כל הדרך.</li>
+    <li>🚫 <strong>הוגנות:</strong> אין להשתמש בצ'יטים, סקריפטים, או תרגילי רמאות. הפרת חוקים תוביל לפסילת הקבוצה.</li>
   </ul>
 </section>
 
