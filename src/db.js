@@ -22,6 +22,13 @@ db.exec(`
   )
 `);
 
+// מיגרציה בטוחה: מוסיף עמודת remember_token אם היא עוד לא קיימת (לזיכרון כניסה ארוך-טווח)
+const registrationColumns = db.prepare("PRAGMA table_info(registrations)").all();
+if (!registrationColumns.some((c) => c.name === "remember_token")) {
+  db.exec("ALTER TABLE registrations ADD COLUMN remember_token TEXT");
+  db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_registrations_remember_token ON registrations(remember_token)");
+}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS teams (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,6 +77,24 @@ function createRegistration({
        VALUES (?, ?, ?, ?, ?, ?)`
     )
     .run(discordId, discordUsername, discordAvatar, riotConnectionName, username, passwordHash);
+}
+
+function findByRememberToken(token) {
+  return db
+    .prepare("SELECT * FROM registrations WHERE remember_token = ?")
+    .get(token);
+}
+
+function setRememberToken(registrationId, token) {
+  return db
+    .prepare("UPDATE registrations SET remember_token = ? WHERE id = ?")
+    .run(token, registrationId);
+}
+
+function clearRememberToken(registrationId) {
+  return db
+    .prepare("UPDATE registrations SET remember_token = NULL WHERE id = ?")
+    .run(registrationId);
 }
 
 function listRegistrations() {
@@ -146,6 +171,9 @@ function listTeamsWithMembers() {
 module.exports = {
   findByDiscordId,
   findByUsername,
+  findByRememberToken,
+  setRememberToken,
+  clearRememberToken,
   createRegistration,
   listRegistrations,
   deleteRegistration,

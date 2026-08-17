@@ -35,9 +35,14 @@ function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(hashBuffer, testBuffer);
 }
 
+function generateRememberToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
+
 module.exports = {
   usernameFromDiscordUser,
   generatePassword,
   hashPassword,
   verifyPassword,
+  generateRememberToken,
 };

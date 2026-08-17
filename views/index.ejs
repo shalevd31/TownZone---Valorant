@@ -1,22 +1,31 @@
 <%- include("partials/head", { title: "הרשמה לטורניר ולוראנט | TownZone" }) %>
 
 <section class="card center">
-  <h1>טורניר ולוראנט</h1>
-  <p class="lead">בחרו הרשמה או כניסה כדי להמשיך.</p>
+  <% if (registration) { %>
+    <h1>ברוך שובך, <%= registration.discord_username %>!</h1>
+    <p class="lead">אתם כבר רשומים לטורניר — אין צורך להירשם שוב.</p>
+    <div class="choice-row">
+      <a class="btn btn-primary btn-lg" href="/account">האזור האישי שלי</a>
+      <a class="btn btn-secondary btn-lg" href="/logout">התנתקות</a>
+    </div>
+  <% } else { %>
+    <h1>טורניר ולוראנט</h1>
+    <p class="lead">בחרו הרשמה או כניסה כדי להמשיך.</p>
 
-  <% if (sessionExpired) { %>
-    <p class="alert">ההתחברות פגה, אנא התחברו שוב.</p>
+    <% if (sessionExpired) { %>
+      <p class="alert">ההתחברות פגה, אנא התחברו שוב.</p>
+    <% } %>
+
+    <div class="choice-row">
+      <a class="btn btn-primary btn-lg" href="/auth/discord">הרשמה</a>
+      <a class="btn btn-secondary btn-lg" href="/login">כניסה</a>
+    </div>
+
+    <p class="hint">
+      עדיין לא בשרת? הצטרפו קודם:
+      <a href="<%= discordInviteUrl %>" target="_blank" rel="noopener"><%= discordInviteUrl.replace('https://','') %></a>
+    </p>
   <% } %>
-
-  <div class="choice-row">
-    <a class="btn btn-primary btn-lg" href="/auth/discord">הרשמה</a>
-    <a class="btn btn-secondary btn-lg" href="/login">כניסה</a>
-  </div>
-
-  <p class="hint">
-    עדיין לא בשרת? הצטרפו קודם:
-    <a href="<%= discordInviteUrl %>" target="_blank" rel="noopener"><%= discordInviteUrl.replace('https://','') %></a>
-  </p>
 </section>
 
 <%- include("partials/foot") %>

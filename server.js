@@ -3,6 +3,7 @@ const path = require("path");
 const crypto = require("crypto");
 const express = require("express");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const basicAuth = require("express-basic-auth");
 
 const discord = require("./src/discord");
@@ -15,6 +16,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DISCORD_INVITE_URL = process.env.DISCORD_INVITE_URL || "https://discord.gg/townzone";
 const GUILD_ID = process.env.DISCORD_GUILD_ID || null;
+
+const REMEMBER_COOKIE = "tz_remember";
+const REMEMBER_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 365; // שנה
 
 // --- בדיקת קונפיגורציה בסיסית ---
 if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET) {
@@ -32,6 +36,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use(
   session({
@@ -41,6 +46,29 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // שבוע
   })
 );
+
+// "זוכר אותך" - עוגייה ארוכת טווח שמזהה נרשמים חוזרים גם אם הסשן בזיכרון
+// אבד (למשל אחרי הפעלה מחדש של השרת), כדי שלא יצטרכו להירשם/להתחבר שוב.
+function issueRememberCookie(req, res, registration) {
+  const token = credentials.generateRememberToken();
+  db.setRememberToken(registration.id, token);
+  res.cookie(REMEMBER_COOKIE, token, {
+    maxAge: REMEMBER_MAX_AGE_MS,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: req.secure,
+  });
+}
+
+app.use((req, res, next) => {
+  if (!req.session.loggedInUsername && !req.session.discordUser && req.cookies[REMEMBER_COOKIE]) {
+    const registration = db.findByRememberToken(req.cookies[REMEMBER_COOKIE]);
+    if (registration) {
+      req.session.loggedInUsername = registration.username;
+    }
+  }
+  next();
+});
 
 // מוודא שיש טוקן דיסקורד תקף בסשן, מרענן אם פג תוקף
 async function requireDiscordAuth(req, res, next) {
@@ -82,6 +110,7 @@ app.get("/", (req, res) => {
   res.render("index", {
     discordInviteUrl: DISCORD_INVITE_URL,
     sessionExpired: req.query.session_expired === "1",
+    registration: getCurrentRegistration(req),
   });
 });
 
@@ -234,7 +263,7 @@ app.post("/register/confirm", requireDiscordAuth, async (req, res) => {
     const username = credentials.usernameFromDiscordUser(user);
     const password = credentials.generatePassword();
 
-    db.createRegistration({
+    const result = db.createRegistration({
       discordId: user.id,
       discordUsername: user.global_name || user.username,
       discordAvatar: discord.avatarUrl(user),
@@ -242,6 +271,9 @@ app.post("/register/confirm", requireDiscordAuth, async (req, res) => {
       username,
       passwordHash: credentials.hashPassword(password),
     });
+
+    req.session.loggedInUsername = username;
+    issueRememberCookie(req, res, { id: Number(result.lastInsertRowid) });
 
     let dmSent = true;
     try {
@@ -271,6 +303,7 @@ app.post("/register/confirm", requireDiscordAuth, async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  if (getCurrentRegistration(req)) return res.redirect("/account");
   res.render("login", { error: null });
 });
 
@@ -283,6 +316,7 @@ app.post("/login", (req, res) => {
   }
 
   req.session.loggedInUsername = registration.username;
+  issueRememberCookie(req, res, registration);
   res.redirect("/account");
 });
 
@@ -366,6 +400,9 @@ app.get("/team", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
+  const registration = getCurrentRegistration(req);
+  if (registration) db.clearRememberToken(registration.id);
+  res.clearCookie(REMEMBER_COOKIE);
   req.session.destroy(() => res.redirect("/"));
 });
 

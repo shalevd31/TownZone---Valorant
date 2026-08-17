@@ -286,16 +286,15 @@ code { background: #0f1923; padding: 2px 6px; border-radius: 4px; font-size: 12p
 .card,
 .hero,
 .steps,
-.agent-carousel,
-.guest-card,
-.prize-hero,
+.tourney-hero,
+.info-cards,
+.attention-box,
 .admin,
 main.container > section {
   animation: fadeUp 0.5s ease both;
 }
-.agent-carousel { animation-delay: 0.05s; }
-.guest-card { animation-delay: 0.15s; }
-.prize-hero { animation-delay: 0.25s; }
+.info-cards { animation-delay: 0.15s; }
+.attention-box { animation-delay: 0.25s; }
 .steps { animation-delay: 0.35s; }
 
 /* --- אפקט סורק (scanlines), עדין ברקע --- */
@@ -397,113 +396,98 @@ main.container > section {
 }
 .team-block h2 { margin: 0 0 4px; }
 
-/* --- קרוסלת סוכנים מונפשת (תמונות רשמיות מ-valorant-api.com) --- */
-.agent-carousel {
+/* --- הירו ראשי: דמויות/אורח בצדדים, כותרת+כפתור באמצע --- */
+.tourney-hero {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 640px) 1fr;
+  align-items: center;
+  gap: 12px;
+  max-width: 1100px;
+  margin: 8px auto 40px;
   position: relative;
-  height: 320px;
-  max-width: 620px;
-  margin: 32px auto;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: radial-gradient(circle at 50% 120%, rgba(255, 70, 85, 0.1), transparent 70%), var(--bg-alt);
-  overflow: hidden;
 }
 
-@keyframes agentCycle {
-  0%, 1% { opacity: 0; transform: scale(0.97) translateY(6px); }
-  4%, 12% { opacity: 1; transform: scale(1) translateY(0); }
-  15%, 100% { opacity: 0; transform: scale(0.97) translateY(6px); }
-}
-
-.carousel-item {
-  position: absolute;
-  inset: 0;
+.hero-flank {
+  position: relative;
+  height: 340px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 2px;
-  padding-bottom: 16px;
-  animation: agentCycle 12s infinite;
-  animation-fill-mode: backwards;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 70, 85, 0.12), transparent 70%), var(--bg-alt);
+  border: 1px solid var(--border);
 }
-.carousel-item:nth-child(1) { animation-delay: 0s; }
-.carousel-item:nth-child(2) { animation-delay: 2s; }
-.carousel-item:nth-child(3) { animation-delay: 4s; }
-.carousel-item:nth-child(4) { animation-delay: 6s; }
-.carousel-item:nth-child(5) { animation-delay: 8s; }
-.carousel-item:nth-child(6) { animation-delay: 10s; }
+
+/* קרוסלה - JS מחליף .is-active כל 2 שניות, בלי טיימינג שברירי של CSS */
+.hero-flank .carousel-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.hero-flank .carousel-item.is-active { opacity: 1; }
 
 .agent-portrait {
-  height: 230px;
+  height: 300px;
   object-fit: contain;
-  filter: drop-shadow(0 0 28px var(--agent-color));
-}
-.agent-name { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
-.agent-role {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--agent-color);
-  font-weight: 700;
+  filter: drop-shadow(0 0 26px var(--agent-color, var(--red)));
 }
 
-/* --- כרטיס אורח --- */
-.guest-card {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  max-width: 620px;
-  margin: 0 auto 24px;
-  padding: 18px 24px;
-  background: linear-gradient(90deg, rgba(255, 70, 85, 0.1), transparent);
-  border: 1px solid var(--red);
-  border-radius: 14px;
+.hero-flank-right {
+  padding: 24px;
+  gap: 14px;
 }
-.guest-avatar {
-  flex-shrink: 0;
-  width: 84px;
-  height: 84px;
+.guest-portrait {
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
-  background: var(--bg-alt);
-  border: 2px solid var(--red);
-  box-shadow: 0 0 18px rgba(255, 70, 85, 0.6);
+  border: 3px solid var(--red);
+  box-shadow: 0 0 30px rgba(255, 70, 85, 0.55);
 }
-.guest-tag {
-  display: inline-block;
-  font-size: 11px;
+.hero-flank-right .guest-tag {
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--red);
   font-weight: 800;
-  margin-bottom: 4px;
-}
-.guest-text p { margin: 0; color: var(--text-dim); }
-.guest-text strong { color: var(--text); }
-
-/* --- באנר פרס גדול --- */
-.prize-hero {
   text-align: center;
-  max-width: 720px;
-  margin: 0 auto 28px;
-  padding: 48px 32px;
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 20% -10%, rgba(255, 70, 85, 0.25), transparent 55%),
-    radial-gradient(circle at 85% 110%, rgba(88, 101, 242, 0.2), transparent 55%),
-    var(--card);
-  border: 1px solid var(--red);
 }
-.prize-hero h1 {
-  margin: 0 0 28px;
-  font-size: clamp(24px, 5vw, 38px);
-  line-height: 1.35;
+
+.hero-center {
+  text-align: center;
+  padding: 12px 8px;
+}
+.hero-eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.hero-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  line-height: 1.25;
+  margin: 0 0 14px;
   text-wrap: balance;
+}
+.hero-prize {
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--text-dim);
+  margin: 0 0 28px;
 }
 .prize-amount {
   color: var(--red);
+  font-weight: 800;
   text-shadow: 0 0 30px rgba(255, 70, 85, 0.6);
 }
 
@@ -524,8 +508,77 @@ main.container > section {
   background: #0f1923;
 }
 
-.rules { max-width: 720px; margin: 0 auto 28px; }
-.format-list { list-style: none; padding: 0; color: var(--text-dim); line-height: 2.1; }
-.format-list strong { color: var(--text); }
+@media (max-width: 900px) {
+  .tourney-hero { grid-template-columns: 1fr; }
+  .hero-center { order: -1; }
+  .hero-flank { height: 260px; }
+  .agent-portrait { height: 220px; }
+  .guest-portrait { width: 150px; height: 150px; }
+}
+
+/* --- כרטיסי מידע (פרס / הרכב / לו"ז) --- */
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto 28px;
+}
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 22px;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.info-card:hover { transform: translateY(-4px); border-color: var(--red); }
+.info-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  border-radius: 50%;
+  background: rgba(255, 70, 85, 0.12);
+}
+.info-card h3 { margin: 0 0 10px; font-size: 17px; letter-spacing: 0.5px; }
+.info-card p { margin: 0; color: var(--text-dim); font-size: 14px; line-height: 1.7; }
+.info-card strong { color: var(--text); }
+
+@media (max-width: 720px) {
+  .info-cards { grid-template-columns: 1fr; }
+}
+
+/* --- תיבת "שימו לב" עם פינות מודגשות --- */
+.attention-box {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto 28px;
+  padding: 32px;
+  text-align: center;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+}
+.attention-box::before,
+.attention-box::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--red);
+}
+.attention-box::before { top: -1px; inset-inline-end: -1px; border-inline-start: none; border-bottom: none; }
+.attention-box::after { bottom: -1px; inset-inline-start: -1px; border-inline-end: none; border-top: none; }
+.attention-box h2 { margin: 0 0 14px; font-size: 22px; }
+.attention-tag { color: var(--red); }
+.attention-box p {
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto 20px;
+  line-height: 1.8;
+}
 
 .cta-footer { max-width: 620px; margin: 0 auto; }
