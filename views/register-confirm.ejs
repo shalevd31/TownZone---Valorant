@@ -7,11 +7,15 @@
   </div>
 
   <h1>מוכנים! מאשרים הרשמה</h1>
-  <p class="lead">אימתנו בהצלחה את החיבורים הבאים:</p>
+  <p class="lead">אלו הפרטים שיישמרו להרשמה שלכם:</p>
 
   <ul class="check-list">
     <li>✅ משתמש דיסקורד: <strong><%= user.global_name || user.username %></strong></li>
-    <li>✅ חשבון Riot מאומת: <strong><%= riotId %></strong></li>
+    <% if (rsoVerified) { %>
+      <li>✅ חשבון Riot מאומת: <strong><%= riotId %></strong></li>
+    <% } else { %>
+      <li>Riot ID (הוזן ידנית, טרם אומת אוטומטית): <strong><%= riotId %></strong></li>
+    <% } %>
   </ul>
 
   <form method="POST" action="/register/confirm">

@@ -119,13 +119,18 @@ app.get("/register", requireDiscordAuth, async (req, res) => {
     }
 
     if (!req.session.riotAccount) {
-      return res.render("connect-riot", { user, avatarUrl: discord.avatarUrl(user) });
+      return res.render("connect-riot", {
+        user,
+        avatarUrl: discord.avatarUrl(user),
+        rsoConfigured: riot.isConfigured(),
+      });
     }
 
     res.render("register-confirm", {
       user,
       avatarUrl: discord.avatarUrl(user),
       riotId: riot.riotIdFromAccount(req.session.riotAccount),
+      rsoVerified: riot.isConfigured(),
     });
   } catch (err) {
     console.error(err);
@@ -168,6 +173,29 @@ app.get("/auth/riot/callback", async (req, res) => {
   }
 });
 
+// זמני - כל עוד אין אישור RSO מריוט, מבקשים את ה-Riot ID באופן ידני במקום אימות אמיתי.
+// ברגע ש-RIOT_CLIENT_ID/SECRET יוגדרו, riot.isConfigured() יחזיר true והנתיב הזה יפסיק לשמש.
+app.post("/register/riot-manual", (req, res) => {
+  const user = req.session.discordUser;
+  if (!user) return res.redirect("/");
+  if (riot.isConfigured()) return res.redirect("/register");
+
+  const raw = (req.body.riotId || "").trim();
+  const match = raw.match(/^(.{2,20}?)#([A-Za-z0-9]{2,6})$/);
+
+  if (!match) {
+    return res.render("connect-riot", {
+      user,
+      avatarUrl: discord.avatarUrl(user),
+      rsoConfigured: false,
+      error: "פורמט לא תקין. יש להזין בדיוק בצורה שם#תגית (למשל: PlayerName#1234).",
+    });
+  }
+
+  req.session.riotAccount = { gameName: match[1], tagLine: match[2] };
+  res.redirect("/register");
+});
+
 app.post("/register/confirm", requireDiscordAuth, async (req, res) => {
   const user = req.session.discordUser;
   const token = req.session.token;
@@ -183,7 +211,11 @@ app.post("/register/confirm", requireDiscordAuth, async (req, res) => {
     }
 
     if (!req.session.riotAccount) {
-      return res.render("connect-riot", { user, avatarUrl: discord.avatarUrl(user) });
+      return res.render("connect-riot", {
+        user,
+        avatarUrl: discord.avatarUrl(user),
+        rsoConfigured: riot.isConfigured(),
+      });
     }
     const riotId = riot.riotIdFromAccount(req.session.riotAccount);
 

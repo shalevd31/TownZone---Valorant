@@ -1,4 +1,4 @@
-<%- include("partials/head", { title: "התחברות עם Riot" }) %>
+<%- include("partials/head", { title: "פרטי Riot" }) %>
 
 <section class="card">
   <div class="user-chip">
@@ -6,13 +6,33 @@
     <span><%= user.global_name || user.username %></span>
   </div>
 
-  <h1>עוד צעד אחד — התחברו עם Riot</h1>
-  <p class="lead">
-    כדי להשלים הרשמה חובה לאמת בעלות על חשבון Riot שלכם. לוחצים על הכפתור,
-    מתחברים במסך ההתחברות הרשמי של Riot (Riot Client), וחוזרים לכאן אוטומטית.
-  </p>
+  <% if (rsoConfigured) { %>
+    <h1>עוד צעד אחד — התחברו עם Riot</h1>
+    <p class="lead">
+      כדי להשלים הרשמה חובה לאמת בעלות על חשבון Riot שלכם. לוחצים על הכפתור,
+      מתחברים במסך ההתחברות הרשמי של Riot (Riot Client), וחוזרים לכאן אוטומטית.
+    </p>
+    <a class="btn btn-primary" href="/auth/riot">התחברות עם Riot</a>
+  <% } else { %>
+    <h1>עוד צעד אחד — פרטי Riot</h1>
+    <p class="lead">
+      הזינו את ה-Riot ID שלכם בדיוק כפי שהוא מופיע ב-Riot Client, בפורמט
+      <strong>שם#תגית</strong> (לדוגמה: PlayerName#1234).
+    </p>
 
-  <a class="btn btn-primary" href="/auth/riot">התחברות עם Riot</a>
+    <% if (typeof error !== "undefined" && error) { %>
+      <p class="alert"><%= error %></p>
+    <% } %>
+
+    <form method="POST" action="/register/riot-manual" class="form">
+      <label>
+        Riot ID
+        <input type="text" name="riotId" placeholder="PlayerName#1234" required />
+      </label>
+      <button type="submit" class="btn btn-primary">המשך</button>
+    </form>
+  <% } %>
+
   <a class="btn btn-secondary" href="/logout">התנתקות</a>
 </section>
 
